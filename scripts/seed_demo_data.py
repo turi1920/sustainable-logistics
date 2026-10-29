@@ -1,7 +1,15 @@
 import asyncio
 from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal
+from pathlib import Path
+import sys
 import uuid
+
+# Ensure project root is on sys.path so the script can be executed directly as `python scripts/seed_demo_data.py`
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 from backend.app.core.security import get_password_hash
 from backend.app.db.base import Base
 from backend.app.db.session import async_session_factory, engine
@@ -17,14 +25,36 @@ from backend.app.models.returns import (
     ReturnItem,
     ReturnRequest,
 )
+from sqlalchemy import select
 
 
 async def seed():
-    print("Initializing database tables...")
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    clean_db = "--clean" in sys.argv or "--reseed" in sys.argv
+    if clean_db:
+        print("Cleaning existing database tables (--clean / --reseed requested)...")
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.drop_all)
+            await conn.run_sync(Base.metadata.create_all)
+    else:
+        print("Initializing database tables...")
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
 
     async with async_session_factory() as db:
+        if not clean_db:
+            stmt = select(Organization).where(Organization.code == "SRL_OPERATOR")
+            existing_org = (await db.execute(stmt)).scalar_one_or_none()
+            if existing_org:
+                print("Database has already been seeded with initial demo data. All roles and records are ready.")
+                print("\nDemo Credentials (password for all is 'password123'):")
+                print("  Admin:       admin@reverse-logistics.com")
+                print("  Agent:       agent@reverse-logistics.com")
+                print("  Ops Spec:    ops@reverse-logistics.com")
+                print("  Approver:    approver@apex.com")
+                print("  Analyst:     analyst@reverse-logistics.com")
+                print("\nTip: Pass --clean or --reseed to drop and re-create all demo records.")
+                return
+
         print("Seeding organizations...")
         org_operator = Organization(
             code="SRL_OPERATOR",
