@@ -12,7 +12,10 @@ try:
 except ImportError:
     from client import api
 
-st.set_page_config(page_title="Return Registration", page_icon="📋", layout="wide")
+try:
+    st.set_page_config(page_title="Return Registration", page_icon="📋", layout="wide")
+except Exception:
+    pass
 st.title("📋 Return Registration & Intake")
 st.caption("Manual return registration for authorized administrators (extensible for future ecommerce integrations).")
 

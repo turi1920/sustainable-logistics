@@ -12,7 +12,10 @@ try:
 except ImportError:
     from client import api
 
-st.set_page_config(page_title="Refunds Management", page_icon="💰", layout="wide")
+try:
+    st.set_page_config(page_title="Refunds Management", page_icon="💰", layout="wide")
+except Exception:
+    pass
 st.title("💰 Customer Refunds Reconciliation")
 st.caption("Accounting ledger for refund eligibility, status tracking, and manual payout reference recording.")
 

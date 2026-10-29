@@ -12,7 +12,10 @@ try:
 except ImportError:
     from client import api
 
-st.set_page_config(page_title="Warehouse Custody", page_icon="🏬", layout="wide")
+try:
+    st.set_page_config(page_title="Warehouse Custody", page_icon="🏬", layout="wide")
+except Exception:
+    pass
 st.title("🏬 Warehouse Intake & Custody Tracking")
 st.caption("Central hub receiving, storage bin allocation, custody transfers, and chronological product tracking.")
 

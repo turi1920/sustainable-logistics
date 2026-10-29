@@ -12,7 +12,10 @@ try:
 except ImportError:
     from client import api
 
-st.set_page_config(page_title="Pickup Agent Portal", page_icon="🚚", layout="wide")
+try:
+    st.set_page_config(page_title="Pickup Agent Portal", page_icon="🚚", layout="wide")
+except Exception:
+    pass
 st.title("🚚 Pickup Agent Portal")
 st.caption("Field operations for assigned collections, product code verification, and preliminary damage assessment.")
 

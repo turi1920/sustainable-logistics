@@ -12,7 +12,10 @@ try:
 except ImportError:
     from client import api
 
-st.set_page_config(page_title="Recovery Execution", page_icon="⚙️", layout="wide")
+try:
+    st.set_page_config(page_title="Recovery Execution", page_icon="⚙️", layout="wide")
+except Exception:
+    pass
 st.title("⚙️ Recovery Execution & Resale Gate")
 st.caption("Work order tracking, quality checks, NIST 800-88 data sanitization, and resale release verification.")
 

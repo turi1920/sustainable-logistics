@@ -14,7 +14,10 @@ try:
 except ImportError:
     from client import api
 
-st.set_page_config(page_title="Technical Inspection", page_icon="🔬", layout="wide")
+try:
+    st.set_page_config(page_title="Technical Inspection", page_icon="🔬", layout="wide")
+except Exception:
+    pass
 st.title("🔬 Technical Inspection & NRV Economics")
 st.caption("Operations Specialist condition testing, component-level defects, and Net Recovery Value calculations.")
 

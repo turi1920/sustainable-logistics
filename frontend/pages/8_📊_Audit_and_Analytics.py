@@ -15,7 +15,10 @@ try:
 except ImportError:
     from client import api
 
-st.set_page_config(page_title="Audit & Analytics", page_icon="📊", layout="wide")
+try:
+    st.set_page_config(page_title="Audit & Analytics", page_icon="📊", layout="wide")
+except Exception:
+    pass
 st.title("📊 Recovery Analytics & Immutable Audit Trail")
 st.caption("Financial performance, circular economy metrics, and append-only governance trail.")
 
