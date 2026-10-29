@@ -1,8 +1,19 @@
+from pathlib import Path
+import sys
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
-from frontend.client import api
+
+try:
+    from frontend.client import api
+except ImportError:
+    from client import api
 
 st.set_page_config(page_title="Audit & Analytics", page_icon="📊", layout="wide")
 st.title("📊 Recovery Analytics & Immutable Audit Trail")

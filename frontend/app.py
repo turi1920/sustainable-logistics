@@ -1,13 +1,24 @@
-import streamlit as st
-from frontend.client import api
+from pathlib import Path
+import sys
 
-st.set_page_state = "wide"
+# Ensure project root is in sys.path so 'frontend' package is resolvable
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+import streamlit as st
+
 st.set_page_config(
     page_title="Sustainable Reverse Logistics",
     page_icon="♻️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+try:
+    from frontend.client import api
+except ImportError:
+    from client import api
 
 st.title("♻️ Sustainable Reverse Logistics Platform")
 st.subheader("Enterprise Post-Consumer Electronics Recovery & Decision System")

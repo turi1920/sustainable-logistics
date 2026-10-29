@@ -1,7 +1,19 @@
+from pathlib import Path
+import sys
 from typing import Any, Dict, Optional
+
+# Ensure project root is in sys.path so 'frontend' package is resolvable
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 import httpx
 import streamlit as st
-from frontend.config import BACKEND_API_BASE_URL, API_V1_PREFIX, TIMEOUT_SECONDS
+
+try:
+    from frontend.config import API_V1_PREFIX, BACKEND_API_BASE_URL, TIMEOUT_SECONDS
+except ImportError:
+    from config import API_V1_PREFIX, BACKEND_API_BASE_URL, TIMEOUT_SECONDS
 
 
 class APIClient:
