@@ -108,17 +108,15 @@ def render_home():
 
 
 # Define Pages
-PAGES_DIR = Path(__file__).parent / "pages"
-
 page_home = st.Page(render_home, title="Dashboard & Login", icon="🏠", default=True)
-page_return_reg = st.Page(str(PAGES_DIR / "1_📋_Return_Registration.py"), title="Return Registration", icon="📋")
-page_pickup = st.Page(str(PAGES_DIR / "2_🚚_Pickup_Agent_Portal.py"), title="Pickup Agent Portal", icon="🚚")
-page_warehouse = st.Page(str(PAGES_DIR / "3_🏬_Warehouse_Custody.py"), title="Warehouse Custody", icon="🏬")
-page_inspection = st.Page(str(PAGES_DIR / "4_🔬_Technical_Inspection.py"), title="Technical Inspection", icon="🔬")
-page_approvals = st.Page(str(PAGES_DIR / "5_🛡️_Manufacturer_Approvals.py"), title="Manufacturer Approvals", icon="🛡️")
-page_execution = st.Page(str(PAGES_DIR / "6_⚙️_Recovery_Execution.py"), title="Recovery Execution", icon="⚙️")
-page_refunds = st.Page(str(PAGES_DIR / "7_💰_Refunds_Management.py"), title="Refunds Management", icon="💰")
-page_audit = st.Page(str(PAGES_DIR / "8_📊_Audit_and_Analytics.py"), title="Audit & Analytics", icon="📊")
+page_return_reg = st.Page("pages/return_registration.py", title="Return Registration", icon="📋")
+page_pickup = st.Page("pages/pickup_agent.py", title="Pickup Agent Portal", icon="🚚")
+page_warehouse = st.Page("pages/warehouse_custody.py", title="Warehouse Custody", icon="🏬")
+page_inspection = st.Page("pages/technical_inspection.py", title="Technical Inspection", icon="🔬")
+page_approvals = st.Page("pages/manufacturer_approvals.py", title="Manufacturer Approvals", icon="🛡️")
+page_execution = st.Page("pages/recovery_execution.py", title="Recovery Execution", icon="⚙️")
+page_refunds = st.Page("pages/refunds_management.py", title="Refunds Management", icon="💰")
+page_audit = st.Page("pages/audit_and_analytics.py", title="Audit & Analytics", icon="📊")
 
 # Build navigation dynamically based on role
 role = current_user.get("role") if current_user else None
