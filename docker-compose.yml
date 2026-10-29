@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: srl_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-reverse_logistics}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d reverse_logistics"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend
+    container_name: srl_backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql+psycopg://postgres:postgres@db:5432/reverse_logistics
+      - ENVIRONMENT=production
+      - DEBUG=false
+      - SECRET_KEY=${SECRET_KEY:-production-secret-must-be-provided-in-env}
+      - UPLOAD_STORAGE_PATH=/app/storage/uploads
+    ports:
+      - "8000:8000"
+    volumes:
+      - upload_data:/app/storage/uploads
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: frontend
+    container_name: srl_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      - BACKEND_API_BASE_URL=http://backend:8000
+    ports:
+      - "8501:8501"
+
+volumes:
+  postgres_data:
+  upload_data:

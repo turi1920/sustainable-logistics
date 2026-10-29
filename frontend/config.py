@@ -1,0 +1,6 @@
+import os
+
+BACKEND_API_BASE_URL = os.getenv("BACKEND_API_BASE_URL", "http://127.0.0.1:8000")
+API_V1_PREFIX = "/api/v1"
+
+TIMEOUT_SECONDS = 15.0
